@@ -47,31 +47,47 @@ int distance(Pair p) { return distance(p.first, p.second); }
 
 bool sort_by_x(Point left, Point right) { return left.x < right.x; }
 
-Pair closest_pair(std::vector<Point> & vec, int start, int end) {
-  //? TODO: implement sorting ?
+
+Pair closest_pair_rec(std::vector<Point> & vec, int start, int end) {
+  // recursive part of the algorithm
   int length = end-start;
   int median = (start+end)/2; 
-  Pair l_pair{0, 0}, r_pair{0, 0};
-  std::sort(vec.begin()+start, vec.begin()+end, sort_by_x);
+  Pair l_pair{vec[start], vec[median]}, r_pair{vec[median], vec[end]};
 
-  // TODO: Split into two
-  // TODO: Divide
   if (length > 3) {
-    l_pair = closest_pair(vec, start, median);
-    r_pair = closest_pair(vec, median, end); 
-  } else if (length == 3) {
+    l_pair = closest_pair_rec(vec, start, median);
+    r_pair = closest_pair_rec(vec, median, end); 
+  } 
+  else if (length == 3) {
     l_pair = {vec[start], vec[median]};
     r_pair = {vec[median], vec[end]};
-  } else if (length == 2) {
+  } 
+  else if (length == 2) {
     return Pair{vec[start], vec[end]};
-  } else {
-    return Pair{vec[start], 0};  //only one point in vector
+  } 
+  else { // vec.size == 1 
+    return Pair{vec[start], 0};  
   }
 
   // TODO: Conquer
-  // TODO: Choose final
+  std::vector<Point> strip;
+  int strip_width = std::min(distance(l_pair), distance(r_pair));
+  for (int i=0; i < vec.size(); ++i) {
+    if ( (vec[i].x < (vec[median].x + strip_width))
+      && (vec[i].x > (vec[median].x - strip_width)) ) {
+      strip.push_back(vec[i]);
+    }
+  }
 
+  // TODO: Choose final
   return (distance(l_pair) < distance(r_pair)) ? l_pair : r_pair;
+}
+
+Pair closest_pair(std::vector<Point> & vec, int start, int end) {
+  //? TODO: implement sorting ?
+  std::sort(vec.begin()+start, vec.begin()+end, sort_by_x);
+
+  return closest_pair_rec(vec, start, end);
 }
 
 int main(int argc, char* argv[]) {
