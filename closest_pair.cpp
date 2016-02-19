@@ -19,7 +19,7 @@ struct Pair
   Point second;
 };
 
-const Pair MAX_PAIR{ Point{0,0}, Point{MAX_DIST, MAX_DIST} };
+const Pair MAX_PAIR = { {0,0}, {MAX_DIST, MAX_DIST} };
 
 std::vector<Point> generate_random_points(int number) {
   std::vector<Point> point_vector;
@@ -58,12 +58,12 @@ void print_pair(Pair const& pair) {
 Pair closest_pair_by_brute_force(std::vector<Point> & vec, int start, int end) {
   // Fin closest pair by considering each pair --> runtime O(n^2)
   if (vec.size() < 2) return MAX_PAIR;
-  Pair winner{vec[0], vec[1]};
+  Pair winner = {vec[0], vec[1]};
 
   for (int i=start; i < end; ++i) {
     for (int j=start; j < end; ++j) {
       if (distance(vec[i], vec[j]) < distance(winner) && (i != j)) {
-        winner = Pair{vec[i], vec[j]};
+        winner = {vec[i], vec[j]};
       }
     }
   }
