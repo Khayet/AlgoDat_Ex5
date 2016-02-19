@@ -4,7 +4,6 @@
 #include <ctime> // seed for random numbers
 #include <algorithm> // std::sort
 #include <cmath> // std::sqrt
-#include <exception>
 
 const int MAX_DIST = 1000; // maximum distance from (0, 0)
 
